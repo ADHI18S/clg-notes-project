@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>St. Joseph's Notes and Papers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #88aedd;
+            color: #f0f0f0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #47616d;
+            border-radius: 8px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        header img {
+            width: 40%;
+            height: 50;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #fff;
+            font-size: 24px;
+        }
+        .selection {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background-color: #444;
+            color: #fff;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #31403b;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:disabled {
+            background-color: #43836b;
+            cursor: not-allowed;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #526a76;
+            border-radius: 4px;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+            button {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container">
+        <header>
+            <img src="Screenshot 2024-07-25 183829.png" alt="St. Joseph's Institutions">
+            <h1>Welcome to St. Joseph's Notes and Papers</h1>
+        </header>
+        <main id="main-content">
+            <div class="info">
+                <p>Welcome to the St. Joseph's Institutions resource hub. Select your semester and department to download study materials and model question papers.</p>
+            </div>
+            <div class="selection">
+                <label for="semester">Choose Semester:</label>
+                <select id="semester">
+                    <option value="" disabled selected>Select Semester</option>
+                    <option value="1">1st Semester</option>
+                    <option value="2">2nd Semester</option>
+                    <option value="3">3rd Semester</option>
+                    <option value="4">4th Semester</option>
+                    <option value="5">5th Semester</option>
+                    <option value="6">6th Semester</option>
+                    <option value="7">7th Semester</option>
+                    <option value="8">8th Semester</option>
+                </select>
+            </div>
+            <div class="selection">
+                <label for="department">Choose Department:</label>
+                <select id="department" disabled>
+                    <!-- Departments will be populated based on semester -->
+                </select>
+            </div>
+            <button id="submit-btn" disabled>Proceed</button>
+        </main>
+        <main id="department-content" style="display: none;">
+            <div class="info">
+                <p>Choose a subject to download notes for the selected department.</p>
+            </div>
+            <div class="selection">
+                <label for="subject">Choose Subject:</label>
+                <select id="subject">
+                    <option value="" disabled selected>Select Subject</option>
+                    <!-- Subjects will be populated here -->
+                </select>
+            </div>
+            <button id="download-btn" disabled>Download Notes</button>
+        </main>
+        <footer>
+            <p>&copy; 2024 St. Joseph's Institutions</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContainer = document.getElementById('main-container');
+            const mainContent = document.getElementById('main-content');
+            const departmentContent = document.getElementById('department-content');
+            const semesterSelect = document.getElementById('semester');
+            const departmentSelect = document.getElementById('department');
+            const subjectSelect = document.getElementById('subject');
+            const submitButton = document.getElementById('submit-btn');
+            const downloadButton = document.getElementById('download-btn');
+
+            const departments = {
+                1: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                2: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                3: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                4: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                5: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                6: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                7: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS'],
+                8: ['CSE', 'ECE', 'IT', 'EEE', 'MECH', 'ADS']
+            };
+
+            const subjects = {
+                1: {
+                    'CSE': ['Introduction to Computing', 'Mathematics I', 'Physics I'],
+                    'ECE': ['Basic Electronics', 'Mathematics I', 'Physics I'],
+                    'IT': ['Introduction to IT', 'Mathematics I', 'Physics I'],
+                    'EEE': ['Basic Electrical Engineering', 'Mathematics I', 'Physics I'],
+                    'MECH': ['Engineering Mechanics', 'Mathematics I', 'Physics I'],
+                    'ADS': ['Introduction to ADS', 'Mathematics I', 'Physics I']
+                },
+                2: {
+                    'CSE': ['Data Structures', 'Mathematics II', 'Physics II'],
+                    'ECE': ['Signals and Systems', 'Mathematics II', 'Physics II'],
+                    'IT': ['Database Systems', 'Mathematics II', 'Physics II'],
+                    'EEE': ['Circuits and Networks', 'Mathematics II', 'Physics II'],
+                    'MECH': ['Thermodynamics', 'Mathematics II', 'Physics II'],
+                    'ADS': ['Advanced Data Structures', 'Mathematics II', 'Physics II']
+                },
+                // Add more semester-specific subjects for each department as needed
+            };
+
+            const notesUrls = {
+                'CSE': {
+                    'Introduction to Computing': 'https://all-year-notes.s3.ap-south-1.amazonaws.com/UNIT+II.pdf',
+                    'Mathematics I': 'https://all-year-notes.s3.ap-south-1.amazonaws.com/UNIT%20II.pdf?response-content-disposition=attachment&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQDduoUKH8IrusA7Wds5yT0JOcYMJ5pV2thNByVDQYjO%2BwIhANttVfcNxFgM8lHEp9y6HjgfW7DnmawNlO5j%2B14%2Fl%2FsnKu0CCL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQARoMMjc0NTU3MDg3MzMwIgwvEgYGpOFUfQ4ml4cqwQLPNSAPK6YI6yUqpHztKHH0AgVrK1d9Vvw96OQtgHgq6oSyk3%2B5ykfPbcX6UyFS0sk2IZoATRhITuuht6GEe%2B6xwclY%2BMBXoGGD95eB7pc6TwctIS%2F6fCVgptspoCamA7T%2FILgAOMztDREsgQ7nXa3a7bstuKl%2BGcmDB%2BktaU7i9B07aBjJ48E7o%2F0214GjmDhF2r%2BKgiDR%2F%2B8P%2Fk3QMWegKS1Z%2FTz0qfoz0%2BlI4wG8j9%2FmYQ4sVAbBao2hAZ3weu5XO2f1L6rSZfXPqWYRSzMtMQ771Nc4fBMtN93FRpK0F5s18SpbiPGJ4IKY%2F9XMQR0NSohCbXkQbg%2Fjbqfpmd1K4m88kdBBngFlGLAovMifD6%2BzEH0qFsRMEfsZD%2BICl8dtjWaec78XOgsJOAlKsqN%2FywF2Q3EQ93kE4td1vpFQC10wv6qJtQY6sgLiZIElNTExGnJKbXrSnvc9stXT2Kg3J3ZJ%2Bq4L4iZcDxIkZJ3ERhTgag2%2Bjm5SSxfr%2BDBNfUcsEVihGcWbpgkea8JRNGkDzFYwv%2F248wXc9sKGqXMo76ktu58k54DGwqMaMDgLRHZl7Q%2FErHe9LPGn4Y1bM2xSifU4dMaSs4L%2Bd8%2B7GTYydDdsmgRUrmGwIVAlnVOVS17G9%2BmwotJDsOV2iyTVkeDVaClVMnFBlY774ZQ5bEEnW%2BDskhG2B2z3F0yrfiADkznWScqi2A%2Fm7ck3mwf36%2BWDP9Dguj7zHonM%2ByqlbGTjyrVoxhM4NxMy65LEH2rC0E9GC8hSc2hwM%2BQDPLvasjAWGD69elqyVeTeZn98AUAmREToJNR%2Fm0SWx3B5%2F1psMezyofJIwaCiYQ8XkEA%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240725T184646Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAT73HAVZRPNVDWZUH%2F20240725%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Signature=1b4819a153b56c6f2d3ff79e6a6a287c186add1fb8649828c5122d3d68ce277c',
+                    'Physics I': 'https://your-s3-bucket.s3.amazonaws.com/CSE/Physics_I.pdf',
+                    'Data Structures': 'https://your-s3-bucket.s3.amazonaws.com/CSE/Data_Structures.pdf',
+                    'Mathematics II': 'https://your-s3-bucket.s3.amazonaws.com/CSE/Mathematics_II.pdf',
+                    'Physics II': 'https://your-s3-bucket.s3.amazonaws.com/CSE/Physics_II.pdf'
+                },
+                'ECE': {
+                    'Basic Electronics': 'https://your-s3-bucket.s3.amazonaws.com/ECE/Basic_Electronics.pdf',
+                    'Mathematics I': 'https://your-s3-bucket.s3.amazonaws.com/ECE/Mathematics_I.pdf',
+                    'Physics I': 'https://your-s3-bucket.s3.amazonaws.com/ECE/Physics_I.pdf',
+                    'Signals and Systems': 'https://your-s3-bucket.s3.amazonaws.com/ECE/Signals_and_Systems.pdf',
+                    'Mathematics II': 'https://your-s3-bucket.s3.amazonaws.com/ECE/Mathematics_II.pdf',
+                    'Physics II': 'https://your-s3-bucket.s3.amazonaws.com/ECE/Physics_II.pdf'
+                },
+                'IT': {
+                    'Introduction to IT': 'https://your-s3-bucket.s3.amazonaws.com/IT/Introduction_to_IT.pdf',
+                    'Mathematics I': 'https://your-s3-bucket.s3.amazonaws.com/IT/Mathematics_I.pdf',
+                    'Physics I': 'https://your-s3-bucket.s3.amazonaws.com/IT/Physics_I.pdf',
+                    'Database Systems': 'https://your-s3-bucket.s3.amazonaws.com/IT/Database_Systems.pdf',
+                    'Mathematics II': 'https://your-s3-bucket.s3.amazonaws.com/IT/Mathematics_II.pdf',
+                    'Physics II': 'https://your-s3-bucket.s3.amazonaws.com/IT/Physics_II.pdf'
+                },
+                'EEE': {
+                    'Basic Electrical Engineering': 'https://your-s3-bucket.s3.amazonaws.com/EEE/Basic_Electrical_Engineering.pdf',
+                    'Mathematics I': 'https://your-s3-bucket.s3.amazonaws.com/EEE/Mathematics_I.pdf',
+                    'Physics I': 'https://your-s3-bucket.s3.amazonaws.com/EEE/Physics_I.pdf',
+                    'Circuits and Networks': 'https://your-s3-bucket.s3.amazonaws.com/EEE/Circuits_and_Networks.pdf',
+                    'Mathematics II': 'https://your-s3-bucket.s3.amazonaws.com/EEE/Mathematics_II.pdf',
+                    'Physics II': 'https://your-s3-bucket.s3.amazonaws.com/EEE/Physics_II.pdf'
+                },
+                'MECH': {
+                    'Engineering Mechanics': 'https://your-s3-bucket.s3.amazonaws.com/MECH/Engineering_Mechanics.pdf',
+                    'Mathematics I': 'https://your-s3-bucket.s3.amazonaws.com/MECH/Mathematics_I.pdf',
+                    'Physics I': 'https://your-s3-bucket.s3.amazonaws.com/MECH/Physics_I.pdf',
+                    'Thermodynamics': 'https://your-s3-bucket.s3.amazonaws.com/MECH/Thermodynamics.pdf',
+                    'Mathematics II': 'https://your-s3-bucket.s3.amazonaws.com/MECH/Mathematics_II.pdf',
+                    'Physics II': 'https://your-s3-bucket.s3.amazonaws.com/MECH/Physics_II.pdf'
+                },
+                'ADS': {
+                    'Introduction to ADS': 'https://your-s3-bucket.s3.amazonaws.com/ADS/Introduction_to_ADS.pdf',
+                    'Mathematics I': 'https://your-s3-bucket.s3.amazonaws.com/ADS/Mathematics_I.pdf',
+                    'Physics I': 'https://your-s3-bucket.s3.amazonaws.com/ADS/Physics_I.pdf',
+                    'Advanced Data Structures': 'https://your-s3-bucket.s3.amazonaws.com/ADS/Advanced_Data_Structures.pdf',
+                    'Mathematics II': 'https://your-s3-bucket.s3.amazonaws.com/ADS/Mathematics_II.pdf',
+                    'Physics II': 'https://your-s3-bucket.s3.amazonaws.com/ADS/Physics_II.pdf'
+                }
+            };
+
+            semesterSelect.addEventListener('change', function() {
+                const semester = this.value;
+                departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                subjectSelect.innerHTML = '<option value="" disabled selected>Select Subject</option>';
+                submitButton.disabled = true;
+                departmentContent.style.display = 'none';
+                mainContent.style.display = 'block';
+
+                if (semester) {
+                    const deptOptions = departments[semester];
+                    deptOptions.forEach(dept => {
+                        const option = document.createElement('option');
+                        option.value = dept;
+                        option.textContent = dept;
+                        departmentSelect.appendChild(option);
+                    });
+                    departmentSelect.disabled = false;
+                } else {
+                    departmentSelect.disabled = true;
+                }
+            });
+
+            departmentSelect.addEventListener('change', function() {
+                submitButton.disabled = !this.value;
+            });
+
+            submitButton.addEventListener('click', function() {
+                const semester = semesterSelect.value;
+                const department = departmentSelect.value;
+
+                if (semester && department) {
+                    mainContent.style.display = 'none';
+                    departmentContent.style.display = 'block';
+                    
+                    const subjOptions = subjects[semester][department];
+                    subjectSelect.innerHTML = '<option value="" disabled selected>Select Subject</option>';
+                    subjOptions.forEach(subj => {
+                        const option = document.createElement('option');
+                        option.value = subj;
+                        option.textContent = subj;
+                        subjectSelect.appendChild(option);
+                    });
+                    subjectSelect.disabled = false;
+                }
+            });
+
+            subjectSelect.addEventListener('change', function() {
+                downloadButton.disabled = !this.value;
+            });
+
+            downloadButton.addEventListener('click', function() {
+                const subject = subjectSelect.value;
+                const department = departmentSelect.value;
+
+                if (subject && department) {
+                    const url = notesUrls[department]?.[subject];
+                    if (url) {
+                        window.location.href = url; // Redirect to the S3 URL
+                    } else {
+                        alert('No notes available for the selected subject.');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
