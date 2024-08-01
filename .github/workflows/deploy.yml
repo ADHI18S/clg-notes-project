@@ -31,8 +31,8 @@ jobs:
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v0.1.2
       with:
-        host: 13.233.57.92
-        username: ubuntu
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           docker pull adhi18s/clg-notes-project:latest
